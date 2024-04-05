@@ -23,7 +23,7 @@ public class DbUpdateObserverMain {
 interface Subject {
     void registerObserver(Observer observer);
     void removeObserver(Observer observer);
-    void writeAdminComment(int productId);
+    void doObserver(int productId);
 }
 
 interface Observer {
@@ -38,7 +38,7 @@ class ProductUpdate implements Subject {
         // 테이블 업데이트 로직
 
         // 업데이트 후 어드민 메모 작성
-        writeAdminComment(productId);
+        doObserver(productId);
     }
 
     @Override
@@ -52,7 +52,7 @@ class ProductUpdate implements Subject {
     }
 
     @Override
-    public void writeAdminComment(int productId) {
+    public void doObserver(int productId) {
         for (Observer observer : observerList) {
             observer.update(productId);
         }
