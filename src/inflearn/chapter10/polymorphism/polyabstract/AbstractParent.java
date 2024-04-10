@@ -6,6 +6,10 @@ public abstract class AbstractParent {
 
     }
 
+    public void notusageMethod() {
+
+    }
+
     public abstract void abstractMethod();
 
 }
