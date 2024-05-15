@@ -7,19 +7,39 @@ import java.util.stream.Collectors;
 public class StreamFilterLearn {
 
     public static void main(String[] args) {
-        StreamLearnCustomer john = new StreamLearnCustomer("John P.", 15);
-        StreamLearnCustomer sarah = new StreamLearnCustomer("Sarah M.", 200);
-        StreamLearnCustomer charles = new StreamLearnCustomer("Charles B.", 150);
-        StreamLearnCustomer mary = new StreamLearnCustomer("Mary T.", 1);
+        StreamLearnCompany company = new StreamLearnCompany("testCompany");
+        StreamLearnCustomer john = new StreamLearnCustomer("John P.", 15, company);
+        StreamLearnCustomer sarah = new StreamLearnCustomer("Sarah M.", 200, company);
+        StreamLearnCustomer charles = new StreamLearnCustomer("Charles B.", 150, company);
+
+        StreamLearnCompany company2 = new StreamLearnCompany("DAN_COC");
+        StreamLearnCustomer mary = new StreamLearnCustomer("Mary T.", 1, company2);
 
         List<StreamLearnCustomer> customerList = Arrays.asList(john, sarah, charles, mary);
 
-        List<StreamLearnCustomer> list = customerList
-                .stream()
-                .filter(c -> c.getPoints() > 100)
-                .collect(Collectors.toList());
+        System.out.println("=====단일 조건=====");
+        // 단일 조건
+        customerList
+            .stream()
+            .filter(c -> c.getPoints() > 100)
+            .forEach(System.out::println);
 
-        list.stream().forEach(System.out::println);
+        System.out.println("=================");
+
+        System.out.println("=====다중 조건=====");
+        customerList
+            .stream()
+            .filter(c -> c.getPoints() > 100 && c.getName().equals("Sarah M."))
+            .forEach(System.out::println);
+        System.out.println("=================");
+
+        System.out.println("=====다중 조건 with 자식 객체 조회=====");
+        customerList
+                .stream()
+                .filter(c -> c.getCompany().getCompanyName().equals("testCompany") && c.getPoints() > 100)
+                .forEach(System.out::println);
+        System.out.println("=================");
+
     }
 
 }
@@ -27,10 +47,12 @@ public class StreamFilterLearn {
 class StreamLearnCustomer {
     private String name;
     private int points;
+    private StreamLearnCompany company;
 
-    public StreamLearnCustomer(String name, int points) {
+    public StreamLearnCustomer(String name, int points, StreamLearnCompany company) {
         this.name = name;
         this.points = points;
+        this.company = company;
     }
 
     public String getName() {
@@ -49,11 +71,33 @@ class StreamLearnCustomer {
         this.points = points;
     }
 
+    public StreamLearnCompany getCompany() {
+        return company;
+    }
+
+    public void setCompany(StreamLearnCompany company) {
+        this.company = company;
+    }
+
     @Override
     public String toString() {
         return "StreamLearnCustomer{" +
                 "name='" + name + '\'' +
                 ", points=" + points +
+                ", company=" + company +
                 '}';
+    }
+}
+
+
+class StreamLearnCompany {
+    private String companyName;
+
+    public StreamLearnCompany(String companyName) {
+        this.companyName = companyName;
+    }
+
+    public String getCompanyName() {
+        return companyName;
     }
 }
